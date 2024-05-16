@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272230166623",
+    "project_id": "house-arena-web-app-basic",
+    "storage_bucket": "house-arena-web-app-basic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272230166623:android:e22819c27f4b31d3c1ebea",
+        "android_client_info": {
+          "package_name": "com.example.web_app_house_arena_basic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD8LXOviMSCw2WF1hs9Xm7WJ1fNZR9CfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

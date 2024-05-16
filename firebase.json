@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "house-arena-web-app-basic",
+          "appId": "1:272230166623:android:e22819c27f4b31d3c1ebea",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "house-arena-web-app-basic",
+          "configurations": {
+            "android": "1:272230166623:android:e22819c27f4b31d3c1ebea",
+            "ios": "1:272230166623:ios:34a1fb0a7e8dfd43c1ebea",
+            "macos": "1:272230166623:ios:34a1fb0a7e8dfd43c1ebea",
+            "web": "1:272230166623:web:edd07a3358251b39c1ebea",
+            "windows": "1:272230166623:web:4018fab5ee664439c1ebea"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

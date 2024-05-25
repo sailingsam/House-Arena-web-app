@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-
+import 'login_signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,27 +14,24 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        //   title: Text('House Arena'),
-        // ),
-        body: Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/bg2.png'),
-              fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/bg2.png'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        Column(
-          children: [
-            bar(),
-          ],
-        ),
-      ],
-    ));
+          Column(
+            children: [
+              bar(),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   ClipRect bar() {
@@ -53,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'HOUSE  ARENA',
+                        'HOUSE ARENA',
                         style: GoogleFonts.iceberg(
                           fontSize: 40,
                           color: Color.fromARGB(255, 249, 174, 130),
@@ -62,7 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Add your admin login action here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginSignupPage()),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 162, 100, 64),
@@ -82,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'HOUSE  ARENA',
+                        'HOUSE ARENA',
                         style: GoogleFonts.iceberg(
                           fontSize: 30,
                           color: Color.fromARGB(255, 249, 174, 130),
@@ -91,7 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Add your admin login action here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginSignupPage()),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 162, 100, 64),
@@ -112,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       Flexible(
                         child: Text(
-                          'HOUSE  ARENA',
+                          'HOUSE ARENA',
                           style: GoogleFonts.iceberg(
                             fontSize: 30,
                             color: Color.fromARGB(255, 249, 174, 130),
@@ -124,7 +129,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: Icon(Icons.account_circle_sharp,
                             color: Color.fromARGB(255, 172, 95, 51)),
                         onPressed: () {
-                          // Add your admin login action here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginSignupPage()),
+                          );
                         },
                       ),
                     ],

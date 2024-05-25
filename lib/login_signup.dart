@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:web_app_house_arena_basic/auth.dart';
+import 'package:web_app_house_arena_basic/home.dart';
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -12,6 +16,12 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   late AnimationController _animationController;
   late Animation<double> _animation;
   final PageController _pageController = PageController();
+  final _loginFormKey = GlobalKey<FormState>();
+  final _signupFormKey = GlobalKey<FormState>();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   @override
   void initState() {
@@ -31,7 +41,141 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   void dispose() {
     _animationController.dispose();
     _pageController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    usernameController.dispose();
     super.dispose();
+  }
+
+  String? emailValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!value.contains('@')) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? passwordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    return null;
+  }
+
+  String? usernameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your username';
+    }
+    return null;
+  }
+
+  void handleLogin() {
+    if (_loginFormKey.currentState!.validate()) {
+      // Handle login action
+      if (_loginFormKey.currentState!.validate()) {
+        loginUser(emailController.text, passwordController.text).then((value) {
+          if (value == 'User logged in successfully') {
+            // Handle successful signup
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                Future.delayed(const Duration(seconds: 3), () {
+                  Navigator.of(context).pushReplacement(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const MyHomePage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0, 0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                        final tween = Tween(begin: begin, end: end);
+                        final curvedAnimation = CurvedAnimation(
+                          parent: animation,
+                          curve: curve,
+                        );
+
+                        return SlideTransition(
+                          position: tween.animate(curvedAnimation),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                });
+
+                return AlertDialog(
+                  title: Text('Hey there! ${emailController.text}'),
+                  content:
+                      const Text('You just unlocked \'Developers Mode\' ;)'),
+                );
+              },
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Login successfull!',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else {
+            // Handle signup error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(value,
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        });
+      }
+    }
+  }
+
+  void handleSignup() {
+    if (_signupFormKey.currentState!.validate()) {
+      // Handle signup action
+      createUser(emailController.text, passwordController.text,
+              usernameController.text)
+          .then((value) {
+        if (value == 'User created successfully') {
+          // Handle successful signup
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('User created successfully',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginSignupPage()),
+          );
+        } else {
+          // Handle signup error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(value,
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      });
+    }
   }
 
   @override
@@ -68,7 +212,10 @@ class _LoginSignupPageState extends State<LoginSignupPage>
                         ),
                         Text(
                           'Welcome',
-                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -97,136 +244,148 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   }
 
   Widget buildLoginForm(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email),
-            labelText: 'Email',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+    return Form(
+      key: _loginFormKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.email),
+              labelText: 'Email',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: emailValidator,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: passwordController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.lock),
+              labelText: 'Password',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            obscureText: true,
+            validator: passwordValidator,
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: handleLogin,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 50,
+                vertical: 15,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'Login',
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.lock),
-            labelText: 'Password',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              _pageController.animateToPage(
+                1,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: const Text(
+              'Don\'t have an account? Sign up',
+              style: TextStyle(color: Colors.blue),
             ),
           ),
-          obscureText: true,
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            // Handle login action
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 50,
-              vertical: 15,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: const Text(
-            'Login',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: () {
-            _pageController.animateToPage(
-              1,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          },
-          child: const Text(
-            'Don\'t have an account? Sign up',
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget buildSignupForm(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
-            labelText: 'Username',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+    return Form(
+      key: _signupFormKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: usernameController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.account_circle),
+              labelText: 'Username',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: usernameValidator,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.email),
+              labelText: 'Email',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: emailValidator,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: passwordController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.lock),
+              labelText: 'Password',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            obscureText: true,
+            validator: passwordValidator,
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: handleSignup,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 50,
+                vertical: 15,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'Sign Up',
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email),
-            labelText: 'Email',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              _pageController.animateToPage(
+                0,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: const Text(
+              'Already have an account? Login',
+              style: TextStyle(color: Colors.blue),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.lock),
-            labelText: 'Password',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          obscureText: true,
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            // Handle signup action
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 50,
-              vertical: 15,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: const Text(
-            'Sign Up',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: () {
-            _pageController.animateToPage(
-              0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          },
-          child: const Text(
-            'Already have an account? Login',
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

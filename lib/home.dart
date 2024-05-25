@@ -1,4 +1,6 @@
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app_house_arena_basic/auth.dart';
 import 'dart:ui';
 import 'login_signup.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,10 +13,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLoggedIn = false;
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    checkSession();
+    if (isLoggedIn) {
+      getUserDetails().then((value) {
+        setState(() {
+          currentUser = value!;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -58,21 +77,60 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginSignupPage()),
-                          );
-                        },
+                        onPressed: isLoggedIn
+                            ? () {
+                                logoutUser().then((value) {
+                                  if (value == 'User logged out successfully') {
+                                    // Handle successful signup
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Logged out successfully',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MyHomePage()),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(value,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                });
+                                setState(() {
+                                  isLoggedIn = false;
+                                });
+                              }
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginSignupPage()),
+                                );
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 162, 100, 64),
                           foregroundColor: Colors.white,
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.account_circle_sharp),
-                            Text('Admin Login'),
+                            Icon(isLoggedIn
+                                ? Icons.logout_outlined
+                                : Icons.account_circle_sharp),
+                            Text(isLoggedIn ? ' Logout' : 'Admin Login'),
                           ],
                         ),
                       ),
@@ -91,21 +149,60 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginSignupPage()),
-                          );
-                        },
+                        onPressed: isLoggedIn
+                            ? () {
+                                logoutUser().then((value) {
+                                  if (value == 'User logged out successfully') {
+                                    // Handle successful signup
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Logged out successfully',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MyHomePage()),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(value,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                });
+                                setState(() {
+                                  isLoggedIn = false;
+                                });
+                              }
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginSignupPage()),
+                                );
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 162, 100, 64),
                           foregroundColor: Colors.white,
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.account_circle_sharp),
-                            Text('Admin Login'),
+                            Icon(isLoggedIn
+                                ? Icons.logout_outlined
+                                : Icons.account_circle_sharp),
+                            Text(isLoggedIn ? ' Logout' : 'Admin Login'),
                           ],
                         ),
                       ),
@@ -126,15 +223,56 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.account_circle_sharp,
-                            color: Color.fromARGB(255, 172, 95, 51)),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginSignupPage()),
-                          );
-                        },
+                        icon: Icon(
+                          isLoggedIn
+                              ? Icons.logout_outlined
+                              : Icons.account_circle_sharp,
+                          color: const Color.fromARGB(255, 155, 93, 0),
+                        ),
+                        onPressed: isLoggedIn
+                            ? () {
+                                logoutUser().then((value) {
+                                  if (value == 'User logged out successfully') {
+                                    // Handle successful signup
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Logged out successfully',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MyHomePage()),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(value,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                });
+                                setState(() {
+                                  isLoggedIn = false;
+                                });
+                              }
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginSignupPage()),
+                                );
+                              },
                       ),
                     ],
                   );
@@ -145,5 +283,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Future<void> checkSession() async {
+    try {
+      // Check if user is logged in
+      bool loggedIn = await checkSessions();
+      setState(() {
+        isLoggedIn = loggedIn;
+      });
+    } catch (e) {
+      print('Error while checking session: $e');
+    }
   }
 }

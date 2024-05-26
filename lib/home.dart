@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/bg2.png'),
+                image: AssetImage('assets/stadiumbg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -46,6 +46,36 @@ class _MyHomePageState extends State<MyHomePage> {
           Column(
             children: [
               bar(),
+              Expanded(child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth > 800) {
+                  return Container(
+                    padding: const EdgeInsets.only(
+                        top: 50.0, left: 20.0, right: 20, bottom: 80.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            flex: 6,
+                            child:
+                                leaderBoardSection()), // This is causing the issue
+                        Expanded(flex: 1, child: SizedBox()),
+                        Expanded(flex: 9, child: eventsSection()),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container(
+                    padding: const EdgeInsets.only(
+                        top: 20.0, left: 20.0, right: 20, bottom: 50.0),
+                    child: Column(
+                      children: [
+                        leaderBoardSection(),
+                        Expanded(child: eventsSection()),
+                      ],
+                    ),
+                  );
+                }
+              })),
             ],
           ),
         ],
@@ -71,10 +101,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       Text(
                         'HOUSE ARENA',
                         style: GoogleFonts.iceberg(
-                          fontSize: 40,
-                          color: Color.fromARGB(255, 249, 174, 130),
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontSize: 40,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                color: Colors.black,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                            ]),
                       ),
                       ElevatedButton(
                         onPressed: isLoggedIn
@@ -122,15 +158,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 162, 100, 64),
-                          foregroundColor: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                          foregroundColor: Color.fromARGB(255, 252, 252, 252),
                         ),
                         child: Row(
                           children: [
                             Icon(isLoggedIn
                                 ? Icons.logout_outlined
                                 : Icons.account_circle_sharp),
-                            Text(isLoggedIn ? ' Logout' : 'Admin Login'),
+                            Text(isLoggedIn ? ' Logout' : ' Admin Login'),
                           ],
                         ),
                       ),
@@ -144,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         'HOUSE ARENA',
                         style: GoogleFonts.iceberg(
                           fontSize: 30,
-                          color: Color.fromARGB(255, 249, 174, 130),
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -194,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 162, 100, 64),
+                          backgroundColor: Color.fromARGB(255, 0, 0, 0),
                           foregroundColor: Colors.white,
                         ),
                         child: Row(
@@ -217,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           'HOUSE ARENA',
                           style: GoogleFonts.iceberg(
                             fontSize: 30,
-                            color: Color.fromARGB(255, 249, 174, 130),
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -227,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           isLoggedIn
                               ? Icons.logout_outlined
                               : Icons.account_circle_sharp,
-                          color: const Color.fromARGB(255, 155, 93, 0),
+                          color: Color.fromARGB(255, 0, 0, 0),
                         ),
                         onPressed: isLoggedIn
                             ? () {
@@ -295,5 +331,353 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       print('Error while checking session: $e');
     }
+  }
+
+  Widget leaderBoardSection() {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Container(
+          color: Colors.black.withOpacity(0.2),
+          margin: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Leaderboard',
+                style: TextStyle(
+                  fontFamily: GoogleFonts.play().fontFamily,
+                  //shoadow
+                  shadows: [
+                    Shadow(
+                      blurRadius: 5.0,
+                      color: Colors.black,
+                      offset: Offset(3.0, 3.0),
+                    ),
+                  ],
+                  fontSize: 28,
+                  // fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              // Leaderboard content
+              leaderboardRow(
+                  'assets/phoenix_circle_ai.png', 'House of Phoenix', 31),
+              leaderboardRow(
+                  'assets/tusker_circle_ai.png', 'House of Tusker', 23),
+              leaderboardRow('assets/kong_circle_ai.png', 'House of Kong', 20),
+              leaderboardRow('assets/leo_circle_ai.png', 'House of Leo', 19),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget leaderboardRow(String logoPath, String houseName, int points) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage(logoPath),
+          ),
+          const SizedBox(width: 16.0),
+          Expanded(
+            child: Text(
+              houseName,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Text(
+            '$points',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget eventsSection() {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Container(
+          color: Colors.black.withOpacity(0.2),
+          margin: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Past Events',
+                style: TextStyle(
+                  fontFamily: GoogleFonts.play().fontFamily,
+                  //shoadow
+                  shadows: [
+                    Shadow(
+                      blurRadius: 5.0,
+                      color: Colors.black,
+                      offset: Offset(3.0, 3.0),
+                    ),
+                  ],
+                  fontSize: 28,
+                  // fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              // Header row
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0, right: 10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        'Event',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.play().fontFamily,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        'Date',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.play().fontFamily,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.blue,
+                        child: Text(
+                          'Kong',
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.play().fontFamily,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Color.fromARGB(255, 222, 200, 4),
+                        child: Text(
+                          'Leo',
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.play().fontFamily,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.red,
+                        child: Text(
+                          'Phoenix',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.green,
+                        child: Text(
+                          'Tusker',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Scrollable content
+              Expanded(
+                child: Scrollbar(
+                  trackVisibility: true,
+                  thumbVisibility: true,
+                  // thickness: 10.0,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    // scrollbar
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Event rows
+                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
+                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
+                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
+                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
+                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
+                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
+                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
+                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
+                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
+                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
+                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
+                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
+                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
+                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
+                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
+                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget eventRow(String eventName, String eventDate, int kongPoints,
+      int leoPoints, int phoenixPoints, int tuskerPoints) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text(
+              eventName,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              eventDate,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                  border: Border(
+                      left: BorderSide(color: Colors.blue),
+                      right: BorderSide(color: Colors.blue),
+                      top: BorderSide(color: Colors.blue),
+                      bottom: BorderSide(color: Colors.blue))),
+              child: Text(
+                '$kongPoints',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              // color: Color.fromARGB(255, 222, 200, 4),
+              decoration: const BoxDecoration(
+                border: Border(
+                    left: BorderSide(color: Color.fromARGB(255, 222, 200, 4)),
+                    right: BorderSide(color: Color.fromARGB(255, 222, 200, 4)),
+                    top: BorderSide(color: Color.fromARGB(255, 222, 200, 4)),
+                    bottom:
+                        BorderSide(color: Color.fromARGB(255, 222, 200, 4))),
+              ),
+              child: Text(
+                '$leoPoints',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                // color: Colors.red,
+                border: Border(
+                    left: BorderSide(color: Colors.red),
+                    right: BorderSide(color: Colors.red),
+                    top: BorderSide(color: Colors.red),
+                    bottom: BorderSide(color: Colors.red)),
+              ),
+              child: Text(
+                '$phoenixPoints',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              // color: Colors.green,
+              decoration: const BoxDecoration(
+                border: Border(
+                    left: BorderSide(color: Colors.green),
+                    right: BorderSide(color: Colors.green),
+                    top: BorderSide(color: Colors.green),
+                    bottom: BorderSide(color: Colors.green)),
+              ),
+              child: Text(
+                '$tuskerPoints',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

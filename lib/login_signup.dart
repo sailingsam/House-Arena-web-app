@@ -182,58 +182,64 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        // color: Colors.white,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/bg2.png'),
+            image: AssetImage('assets/stadiumbg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: FadeTransition(
-            opacity: _animation,
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Text(
-                          'Welcome',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                        ),
-                        SizedBox(width: 48), // Placeholder for alignment
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: PageView(
-                        controller: _pageController,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: FadeTransition(
+              opacity: _animation,
+              child: Card(
+                color: Color.fromARGB(255, 255, 255, 255),
+                elevation: 30,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          buildLoginForm(context),
-                          buildSignupForm(context),
+                          IconButton(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          Text(
+                            'Welcome',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                          ),
+                          SizedBox(width: 48), // Placeholder for alignment
                         ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: PageView(
+                          controller: _pageController,
+                          children: [
+                            buildLoginForm(context),
+                            buildSignupForm(context),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -252,11 +258,12 @@ class _LoginSignupPageState extends State<LoginSignupPage>
           TextFormField(
             controller: emailController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email),
+              prefixIcon: Icon(Icons.email, color: Colors.black),
               labelText: 'Email',
+              labelStyle: TextStyle(color: Colors.black),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.black)),
             ),
             validator: emailValidator,
           ),
@@ -264,10 +271,12 @@ class _LoginSignupPageState extends State<LoginSignupPage>
           TextFormField(
             controller: passwordController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.lock),
+              prefixIcon: Icon(Icons.lock, color: Colors.black),
               labelText: 'Password',
+              labelStyle: TextStyle(color: Colors.black),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.black),
               ),
             ),
             obscureText: true,
@@ -277,7 +286,7 @@ class _LoginSignupPageState extends State<LoginSignupPage>
           ElevatedButton(
             onPressed: handleLogin,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Colors.black,
               padding: const EdgeInsets.symmetric(
                 horizontal: 50,
                 vertical: 15,

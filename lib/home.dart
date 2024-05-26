@@ -54,24 +54,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                            flex: 6,
-                            child:
-                                leaderBoardSection()), // This is causing the issue
+                        Expanded(flex: 6, child: leaderBoardSection()),
                         Expanded(flex: 1, child: SizedBox()),
                         Expanded(flex: 9, child: eventsSection()),
                       ],
                     ),
                   );
                 } else {
-                  return Container(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, left: 20.0, right: 20, bottom: 50.0),
-                    child: Column(
-                      children: [
-                        leaderBoardSection(),
-                        Expanded(child: eventsSection()),
-                      ],
+                  return SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 20.0, right: 20, bottom: 50.0),
+                      child: Column(
+                        children: [
+                          leaderBoardSection(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          eventsSection(),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -338,38 +340,42 @@ class _MyHomePageState extends State<MyHomePage> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
+          // height: 400,
           color: Colors.black.withOpacity(0.2),
           margin: const EdgeInsets.all(16.0),
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Leaderboard',
-                style: TextStyle(
-                  fontFamily: GoogleFonts.play().fontFamily,
-                  //shoadow
-                  shadows: [
-                    Shadow(
-                      blurRadius: 5.0,
-                      color: Colors.black,
-                      offset: Offset(3.0, 3.0),
-                    ),
-                  ],
-                  fontSize: 28,
-                  // fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 255, 255, 255),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Leaderboard',
+                  style: TextStyle(
+                    fontFamily: GoogleFonts.play().fontFamily,
+                    //shoadow
+                    shadows: [
+                      Shadow(
+                        blurRadius: 5.0,
+                        color: Colors.black,
+                        offset: Offset(3.0, 3.0),
+                      ),
+                    ],
+                    fontSize: 28,
+                    // fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              // Leaderboard content
-              leaderboardRow(
-                  'assets/phoenix_circle_ai.png', 'House of Phoenix', 31),
-              leaderboardRow(
-                  'assets/tusker_circle_ai.png', 'House of Tusker', 23),
-              leaderboardRow('assets/kong_circle_ai.png', 'House of Kong', 20),
-              leaderboardRow('assets/leo_circle_ai.png', 'House of Leo', 19),
-            ],
+                const SizedBox(height: 16.0),
+                // Leaderboard content
+                leaderboardRow(
+                    'assets/phoenix_circle_ai.png', 'House of Phoenix', 31),
+                leaderboardRow(
+                    'assets/tusker_circle_ai.png', 'House of Tusker', 23),
+                leaderboardRow(
+                    'assets/kong_circle_ai.png', 'House of Kong', 20),
+                leaderboardRow('assets/leo_circle_ai.png', 'House of Leo', 19),
+              ],
+            ),
           ),
         ),
       ),
@@ -413,6 +419,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
+          height: 900,
           color: Colors.black.withOpacity(0.2),
           margin: const EdgeInsets.all(16.0),
           padding: const EdgeInsets.all(16.0),
@@ -467,61 +474,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        color: Colors.blue,
-                        child: Text(
-                          'Kong',
-                          style: TextStyle(
-                            fontFamily: GoogleFonts.play().fontFamily,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage:
+                            AssetImage('assets/kong_circle_ai.png'),
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        color: Color.fromARGB(255, 222, 200, 4),
-                        child: Text(
-                          'Leo',
-                          style: TextStyle(
-                            fontFamily: GoogleFonts.play().fontFamily,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: AssetImage('assets/leo_circle_ai.png'),
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        color: Colors.red,
-                        child: Text(
-                          'Phoenix',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage:
+                            AssetImage('assets/phoenix_circle_ai.png'),
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        color: Colors.green,
-                        child: Text(
-                          'Tusker',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage:
+                            AssetImage('assets/tusker_circle_ai.png'),
                       ),
                     ),
                   ],
@@ -530,8 +506,10 @@ class _MyHomePageState extends State<MyHomePage> {
               // Scrollable content
               Expanded(
                 child: Scrollbar(
+                  controller: ScrollController(),
                   trackVisibility: true,
                   thumbVisibility: true,
+                  interactive: true,
                   // thickness: 10.0,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -564,6 +542,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Scroll for more...',
+                        style: TextStyle(color: Colors.white)),
+                    Icon(Icons.arrow_downward, color: Colors.white, size: 15),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -579,21 +567,27 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Expanded(
             flex: 3,
-            child: Text(
-              eventName,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text(
+                eventName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              eventDate,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text(
+                eventDate,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

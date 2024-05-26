@@ -1,10 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-
-Client client = Client()
-    .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject('house-arena-web-app')
-    .setSelfSigned(status: true);
+import 'appwrite_client.dart';
 
 Account account = Account(client);
 

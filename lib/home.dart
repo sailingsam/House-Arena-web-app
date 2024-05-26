@@ -4,6 +4,7 @@ import 'package:web_app_house_arena_basic/auth.dart';
 import 'dart:ui';
 import 'login_signup.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:web_app_house_arena_basic/appwrite_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -15,11 +16,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isLoggedIn = false;
   late User currentUser;
+  final AppwriteService appwriteService = AppwriteService();
 
   @override
   void initState() {
     super.initState();
     checkSession();
+
     if (isLoggedIn) {
       getUserDetails().then((value) {
         setState(() {
@@ -181,10 +184,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       Text(
                         'HOUSE ARENA',
                         style: GoogleFonts.iceberg(
-                          fontSize: 30,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontSize: 30,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                color: Colors.black,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                            ]),
                       ),
                       ElevatedButton(
                         onPressed: isLoggedIn
@@ -254,10 +263,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(
                           'HOUSE ARENA',
                           style: GoogleFonts.iceberg(
-                            fontSize: 30,
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 30,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 5.0,
+                                  color: Colors.black,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                              ]),
                         ),
                       ),
                       IconButton(
@@ -415,172 +430,181 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget eventsSection() {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: Container(
-          height: 600,
-          color: Colors.black.withOpacity(0.2),
-          margin: const EdgeInsets.all(16.0),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Past Events',
-                style: TextStyle(
-                  fontFamily: GoogleFonts.play().fontFamily,
-                  //shoadow
-                  shadows: [
-                    Shadow(
-                      blurRadius: 5.0,
-                      color: Colors.black,
-                      offset: Offset(3.0, 3.0),
-                    ),
-                  ],
-                  fontSize: 28,
-                  // fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              // Header row
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, right: 10.0),
-                child: Row(
+    return FutureBuilder<List<Document>>(
+      future: appwriteService.fetchEvents(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No events found.'));
+        } else {
+          final events = snapshot.data!;
+          return ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                height: 600,
+                color: Colors.black.withOpacity(0.2),
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: Text(
-                        'Event',
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.play().fontFamily,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                    Text(
+                      'Past Events',
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.play().fontFamily,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black,
+                            offset: Offset(3.0, 3.0),
+                          ),
+                        ],
+                        fontSize: 28,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
-                    Expanded(
-                        child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/kong_circle_ai.png'),
-                        ),
-                      ),
-                    )),
-                    Expanded(
-                        child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/leo_circle_ai.png'),
-                        ),
-                      ),
-                    )),
-                    Expanded(
-                        child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/phoenix_circle_ai.png'),
-                        ),
-                      ),
-                    )),
-                    Expanded(
-                        child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/tusker_circle_ai.png'),
-                        ),
-                      ),
-                    )),
-                  ],
-                ),
-              ),
-              // Scrollable content
-              Expanded(
-                child: Scrollbar(
-                  controller: ScrollController(),
-                  trackVisibility: true,
-                  thumbVisibility: true,
-                  interactive: true,
-                  // thickness: 10.0,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    // scrollbar
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0, right: 10.0),
+                      child: Row(
                         children: [
-                          // Event rows
-                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
-                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
-                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
-                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
-                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
-                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
-                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
-                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
-                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
-                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
-                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
-                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
-                          eventRow('Event 1', '2024-05-20', 10, 20, 30, 40),
-                          eventRow('Event 2', '2024-06-15', 15, 25, 35, 45),
-                          eventRow('Event 3', '2024-07-10', 20, 30, 40, 50),
-                          eventRow('Event 4', '2024-08-05', 25, 35, 45, 55),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              'Event',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.play().fontFamily,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      AssetImage('assets/kong_circle_ai.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      AssetImage('assets/leo_circle_ai.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: AssetImage(
+                                      'assets/phoenix_circle_ai.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      AssetImage('assets/tusker_circle_ai.png'),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Scroll for more...',
-                        style: TextStyle(color: Colors.white)),
-                    Icon(Icons.arrow_downward, color: Colors.white, size: 15),
+                    Expanded(
+                      child: Scrollbar(
+                        controller: ScrollController(),
+                        trackVisibility: true,
+                        thumbVisibility: true,
+                        interactive: true,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: events.map((event) {
+                                final eventName =
+                                    event.data['event_name'] ?? 'No Name';
+                                final dateTime =
+                                    event.data['date'] ?? 'No Date';
+                                final kongPoints =
+                                    event.data['kong_point'] ?? 0;
+                                final leoPoints = event.data['leo_point'] ?? 0;
+                                final phoenixPoints =
+                                    event.data['pheonix_point'] ?? 0;
+                                final tuskerPoints =
+                                    event.data['tusker_point'] ?? 0;
+                                return eventRow(eventName, dateTime, kongPoints,
+                                    leoPoints, phoenixPoints, tuskerPoints);
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Scroll for more...',
+                              style: TextStyle(color: Colors.white)),
+                          Icon(Icons.arrow_downward,
+                              color: Colors.white, size: 15),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -635,7 +659,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: Container(
-              // color: Color.fromARGB(255, 222, 200, 4),
               decoration: const BoxDecoration(
                 border: Border(
                     left: BorderSide(color: Color.fromARGB(255, 222, 200, 4)),
@@ -657,7 +680,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
-                // color: Colors.red,
                 border: Border(
                     left: BorderSide(color: Colors.red),
                     right: BorderSide(color: Colors.red),
@@ -676,7 +698,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: Container(
-              // color: Colors.green,
               decoration: const BoxDecoration(
                 border: Border(
                     left: BorderSide(color: Colors.green),

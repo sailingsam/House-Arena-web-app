@@ -74,70 +74,68 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   void handleLogin() {
     if (_loginFormKey.currentState!.validate()) {
       // Handle login action
-      if (_loginFormKey.currentState!.validate()) {
-        loginUser(emailController.text, passwordController.text).then((value) {
-          if (value == 'User logged in successfully') {
-            // Handle successful signup
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                Future.delayed(const Duration(seconds: 3), () {
-                  Navigator.of(context).pushReplacement(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const MyHomePage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(1.0, 0.0);
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
+      loginUser(emailController.text, passwordController.text).then((value) {
+        if (value == 'User logged in successfully') {
+          // Handle successful login
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              Future.delayed(const Duration(seconds: 3), () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const MyHomePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
 
-                        final tween = Tween(begin: begin, end: end);
-                        final curvedAnimation = CurvedAnimation(
-                          parent: animation,
-                          curve: curve,
-                        );
+                      final tween = Tween(begin: begin, end: end);
+                      final curvedAnimation = CurvedAnimation(
+                        parent: animation,
+                        curve: curve,
+                      );
 
-                        return SlideTransition(
-                          position: tween.animate(curvedAnimation),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                });
-
-                return AlertDialog(
-                  title: Text('Hey there! ${emailController.text}'),
-                  content:
-                      const Text('You just unlocked \'Developers Mode\' ;)'),
+                      return SlideTransition(
+                        position: tween.animate(curvedAnimation),
+                        child: child,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) => false,
                 );
-              },
-            );
+              });
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Login successfull!',
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
-                backgroundColor: Colors.green,
-              ),
-            );
-          } else {
-            // Handle signup error
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(value,
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        });
-      }
+              return AlertDialog(
+                title: Text('Hey there! ${emailController.text}'),
+                content: const Text('You just unlocked \'Developers Mode\' ;)'),
+              );
+            },
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Login successful!',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          // Handle login error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(value,
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      });
     }
   }
 
@@ -208,13 +206,17 @@ class _LoginSignupPageState extends State<LoginSignupPage>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            icon: Icon(Icons.arrow_back),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.arrow_back, color: Colors.black),
+                                  Text('Back',
+                                      style: TextStyle(color: Colors.black)),
+                                ],
+                              )),
                           Text(
                             'Welcome',
                             style: Theme.of(context)
@@ -229,7 +231,7 @@ class _LoginSignupPageState extends State<LoginSignupPage>
                         ],
                       ),
                       const SizedBox(height: 20),
-                      Expanded(
+                      Flexible(
                         child: PageView(
                           controller: _pageController,
                           children: [
@@ -250,71 +252,74 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   }
 
   Widget buildLoginForm(BuildContext context) {
-    return Form(
-      key: _loginFormKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            controller: emailController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email, color: Colors.black),
-              labelText: 'Email',
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
+    return Container(
+      height: 100,
+      child: Form(
+        key: _loginFormKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email, color: Colors.black),
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.black)),
+              ),
+              validator: emailValidator,
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: passwordController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock, color: Colors.black),
+                labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.black)),
+                  borderSide: const BorderSide(color: Colors.black),
+                ),
+              ),
+              obscureText: true,
+              validator: passwordValidator,
             ),
-            validator: emailValidator,
-          ),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: passwordController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.lock, color: Colors.black),
-              labelText: 'Password',
-              labelStyle: TextStyle(color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.black),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: handleLogin,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 15,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
-            obscureText: true,
-            validator: passwordValidator,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: handleLogin,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 50,
-                vertical: 15,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                _pageController.animateToPage(
+                  1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: const Text(
+                'Don\'t have an account? Sign up',
+                style: TextStyle(color: Colors.blue),
               ),
             ),
-            child: const Text(
-              'Login',
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              _pageController.animateToPage(
-                1,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            },
-            child: const Text(
-              'Don\'t have an account? Sign up',
-              style: TextStyle(color: Colors.blue),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

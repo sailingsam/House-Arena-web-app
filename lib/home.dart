@@ -446,26 +446,32 @@ class _MyHomePageState extends State<MyHomePage> {
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Container(
                 height: 600,
-                color: Colors.black.withOpacity(0.2),
+                color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
                 margin: const EdgeInsets.all(16.0),
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    top: 16.0, left: 30.0, right: 16.0, bottom: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Past Events',
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.play().fontFamily,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 5.0,
-                            color: Colors.black,
-                            offset: Offset(3.0, 3.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Past Events',
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.play().fontFamily,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                color: Colors.black,
+                                offset: Offset(3.0, 3.0),
+                              ),
+                            ],
+                            fontSize: 28,
+                            color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                        ],
-                        fontSize: 28,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16.0),
                     Padding(
@@ -478,7 +484,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               'Event',
                               style: TextStyle(
                                 fontFamily: GoogleFonts.play().fontFamily,
-                                fontSize: 16,
+                                fontSize: 20,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black,
+                                    offset: Offset(2.0, 2.0),
+                                  ),
+                                ],
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
@@ -623,8 +636,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Text(
                     eventName,
-                    style: const TextStyle(
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.play().fontFamily,
                       fontSize: 16,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
@@ -650,9 +665,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 '$kongPoints',
                 style: const TextStyle(
-                  fontSize: 16,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                    fontSize: 16,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Color.fromARGB(255, 45, 65, 82),
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ]),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -670,9 +692,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 '$leoPoints',
                 style: const TextStyle(
-                  fontSize: 16,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                    fontSize: 16,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Color.fromARGB(255, 45, 65, 82),
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ]),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -689,9 +718,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 '$phoenixPoints',
                 style: const TextStyle(
-                  fontSize: 16,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                    fontSize: 16,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Color.fromARGB(255, 45, 65, 82),
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ]),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -708,9 +744,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 '$tuskerPoints',
                 style: const TextStyle(
-                  fontSize: 16,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                    fontSize: 16,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Color.fromARGB(255, 45, 65, 82),
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ]),
                 textAlign: TextAlign.center,
               ),
             ),

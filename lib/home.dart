@@ -419,7 +419,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
-          height: 900,
+          height: 600,
           color: Colors.black.withOpacity(0.2),
           margin: const EdgeInsets.all(16.0),
           padding: const EdgeInsets.all(16.0),
@@ -462,44 +462,69 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Date',
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.play().fontFamily,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage('assets/kong_circle_ai.png'),
                         ),
                       ),
-                    ),
+                    )),
                     Expanded(
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            AssetImage('assets/kong_circle_ai.png'),
+                        child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
                       ),
-                    ),
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage('assets/leo_circle_ai.png'),
+                        ),
+                      ),
+                    )),
                     Expanded(
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: AssetImage('assets/leo_circle_ai.png'),
+                        child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
                       ),
-                    ),
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage('assets/phoenix_circle_ai.png'),
+                        ),
+                      ),
+                    )),
                     Expanded(
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            AssetImage('assets/phoenix_circle_ai.png'),
+                        child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
                       ),
-                    ),
-                    Expanded(
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            AssetImage('assets/tusker_circle_ai.png'),
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage('assets/tusker_circle_ai.png'),
+                        ),
                       ),
-                    ),
+                    )),
                   ],
                 ),
               ),
@@ -569,25 +594,24 @@ class _MyHomePageState extends State<MyHomePage> {
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Text(
-                eventName,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Text(
-                eventDate,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    eventName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    eventDate,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(255, 152, 149, 149),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

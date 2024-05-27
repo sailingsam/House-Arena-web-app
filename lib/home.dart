@@ -72,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 } else {
                   return SingleChildScrollView(
+                    // controller: yourScrollController,
                     child: Container(
                       padding: const EdgeInsets.only(
                           top: 20.0, left: 20.0, right: 20, bottom: 50.0),
@@ -383,20 +384,49 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Leaderboard',
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.play().fontFamily,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 5.0,
-                              color: Colors.black,
-                              offset: Offset(3.0, 3.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.emoji_events_outlined,
+                            color: Colors.white,
+                            size: 30,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                color: Colors.black,
+                                offset: Offset(3.0, 3.0),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            ' Leaderboard ',
+                            style: TextStyle(
+                              fontFamily: GoogleFonts.play().fontFamily,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 5.0,
+                                  color: Colors.black,
+                                  offset: Offset(3.0, 3.0),
+                                ),
+                              ],
+                              fontSize: 28,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
-                          ],
-                          fontSize: 28,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        ),
+                          ),
+                          Icon(
+                            Icons.emoji_events_outlined,
+                            color: Colors.white,
+                            size: 30,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                color: Colors.black,
+                                offset: Offset(3.0, 3.0),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16.0),
                       // Leaderboard content

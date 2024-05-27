@@ -363,7 +363,7 @@ class _MyHomePageState extends State<MyHomePage> {
       future: appwriteService.calculateTotalPoints(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: LinearProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
@@ -496,7 +496,7 @@ class _MyHomePageState extends State<MyHomePage> {
       future: appwriteService.fetchEvents(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: LinearProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -516,7 +516,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
                           'Past Events',
@@ -533,6 +533,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Color.fromARGB(255, 255, 255, 255),
                           ),
                         ),
+                        if (isLoggedIn)
+                          MaterialButton(
+                            child: Row(
+                              children: [
+                                Icon(Icons.add),
+                                Text('Add Event',
+                                    style: TextStyle(fontSize: 16)),
+                              ],
+                            ),
+                            onPressed: () {
+                              // Logic to add new event
+                            },
+                          ),
                       ],
                     ),
                     const SizedBox(height: 16.0),

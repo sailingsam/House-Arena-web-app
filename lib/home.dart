@@ -17,6 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isLoggedIn = false;
   late User currentUser;
   final AppwriteService appwriteService = AppwriteService();
+  final yourScrollController = ScrollController();
 
   @override
   void initState() {
@@ -30,6 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       });
     }
+  }
+
+  @override
+  void dispose() {
+    // _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -570,11 +577,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Expanded(
                       child: Scrollbar(
-                        controller: ScrollController(),
                         trackVisibility: true,
                         thumbVisibility: true,
                         interactive: true,
+                        controller: yourScrollController,
                         child: SingleChildScrollView(
+                          controller: yourScrollController,
                           scrollDirection: Axis.vertical,
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10.0),

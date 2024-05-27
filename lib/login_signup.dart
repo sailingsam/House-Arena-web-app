@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:web_app_house_arena_basic/auth.dart';
 import 'package:web_app_house_arena_basic/home.dart';
+import 'package:web_app_house_arena_basic/appwrite_service.dart';
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -18,6 +19,7 @@ class _LoginSignupPageState extends State<LoginSignupPage>
   final PageController _pageController = PageController();
   final _loginFormKey = GlobalKey<FormState>();
   final _signupFormKey = GlobalKey<FormState>();
+  final AppwriteService appwriteService = AppwriteService();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -139,29 +141,19 @@ class _LoginSignupPageState extends State<LoginSignupPage>
     }
   }
 
+  Future<String> adminVerify(String email) async {
+    final adminEmails = await appwriteService.fetchAdminEmails();
+    if (adminEmails.contains(email)) {
+      return 'User is an admin';
+    } else {
+      return 'You are not verified admin! Contact the admin for access';
+    }
+  }
+
   void handleSignup() {
     if (_signupFormKey.currentState!.validate()) {
-      // Handle signup action
-      createUser(emailController.text, passwordController.text,
-              usernameController.text)
-          .then((value) {
-        if (value == 'User created successfully') {
-          // Handle successful signup
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('User created successfully',
-                  style: TextStyle(
-                    color: Colors.white,
-                  )),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginSignupPage()),
-          );
-        } else {
-          // Handle signup error
+      adminVerify(emailController.text).then((value) {
+        if (value != 'User is an admin') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(value,
@@ -171,6 +163,41 @@ class _LoginSignupPageState extends State<LoginSignupPage>
               backgroundColor: Colors.red,
             ),
           );
+          return;
+        } else {
+          // Handle signup action
+          createUser(emailController.text, passwordController.text,
+                  usernameController.text)
+              .then((value) {
+            if (value == 'User created successfully') {
+              // Handle successful signup
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('User created successfully',
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LoginSignupPage()),
+              );
+            } else {
+              // Handle signup error
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(value,
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          });
         }
       });
     }

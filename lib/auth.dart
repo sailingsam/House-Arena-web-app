@@ -21,6 +21,7 @@ Future<String> loginUser(String email, String password) async {
   try {
     await account.createEmailPasswordSession(email: email, password: password);
     print('User logged in successfully');
+    getUserDetails();
     return 'User logged in successfully';
   } on AppwriteException catch (e) {
     print(e.message);

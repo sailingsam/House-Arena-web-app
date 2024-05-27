@@ -358,53 +358,78 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget leaderBoardSection() {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: Container(
-          // height: 400,
-          color: Colors.black.withOpacity(0.2),
-          margin: const EdgeInsets.all(16.0),
-          padding: const EdgeInsets.all(16.0),
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Leaderboard',
-                  style: TextStyle(
-                    fontFamily: GoogleFonts.play().fontFamily,
-                    //shoadow
-                    shadows: [
-                      Shadow(
-                        blurRadius: 5.0,
-                        color: Colors.black,
-                        offset: Offset(3.0, 3.0),
+    return FutureBuilder<Map<String, double>>(
+      future: appwriteService.calculateTotalPoints(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData) {
+          return Center(child: Text('No data found.'));
+        } else {
+          final housePoints = snapshot.data!;
+          final sortedHouses = housePoints.entries.toList()
+            ..sort((a, b) => b.value.compareTo(a.value));
+
+          return ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                color: Colors.black.withOpacity(0.2),
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Leaderboard',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.play().fontFamily,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 5.0,
+                              color: Colors.black,
+                              offset: Offset(3.0, 3.0),
+                            ),
+                          ],
+                          fontSize: 28,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
                       ),
+                      const SizedBox(height: 16.0),
+                      // Leaderboard content
+                      for (var house in sortedHouses)
+                        leaderboardRow(getHouseLogoPath(house.key), house.key,
+                            house.value),
                     ],
-                    fontSize: 28,
-                    // fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 255, 255, 255),
                   ),
                 ),
-                const SizedBox(height: 16.0),
-                // Leaderboard content
-                leaderboardRow(
-                    'assets/phoenix_circle_ai.png', 'House of Phoenix', 31),
-                leaderboardRow(
-                    'assets/tusker_circle_ai.png', 'House of Tusker', 23),
-                leaderboardRow(
-                    'assets/kong_circle_ai.png', 'House of Kong', 20),
-                leaderboardRow('assets/leo_circle_ai.png', 'House of Leo', 19),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+      },
     );
   }
 
-  Widget leaderboardRow(String logoPath, String houseName, int points) {
+  String getHouseLogoPath(String houseName) {
+    switch (houseName) {
+      case 'House of Phoenix':
+        return 'assets/phoenix_circle_ai.png';
+      case 'House of Tusker':
+        return 'assets/tusker_circle_ai.png';
+      case 'House of Kong':
+        return 'assets/kong_circle_ai.png';
+      case 'House of Leo':
+        return 'assets/leo_circle_ai.png';
+      default:
+        return 'assets/default.png'; // default logo path
+    }
+  }
+
+  Widget leaderboardRow(String logoPath, String houseName, double points) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -592,7 +617,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 final eventName =
                                     event.data['event_name'] ?? 'No Name';
                                 final dateTime =
-                                    event.data['date'] ?? 'No Date';
+                                    event.data['date'] ?? 'No Data';
                                 final kongPoints =
                                     event.data['kong_point'] ?? 0;
                                 final leoPoints = event.data['leo_point'] ?? 0;

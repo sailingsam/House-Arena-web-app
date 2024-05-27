@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:web_app_house_arena_basic/auth.dart';
 import 'home.dart';
 
 void main() {
@@ -13,9 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'House Arena',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 183, 58, 58)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 183, 58, 58)),
         useMaterial3: true,
       ),
       home: const MyHomePage(),

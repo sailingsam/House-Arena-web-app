@@ -68,4 +68,67 @@ class AppwriteService {
       return [];
     }
   }
+
+  // create event
+  Future<void> createEvent(String eventName, String date, int leoPoints,
+      int kongPoints, int phoenixPoints, int tuskerPoints) async {
+    try {
+      await databases.createDocument(
+        documentId: ID.unique(),
+        databaseId: 'house-arena-database',
+        collectionId: 'event-details',
+        data: {
+          'event_name': eventName,
+          'date': date,
+          'kong_point': kongPoints,
+          'leo_point': leoPoints,
+          'pheonix_point': phoenixPoints,
+          'tusker_point': tuskerPoints,
+        },
+      );
+    } catch (e) {
+      print('Error creating event: $e');
+    }
+  }
+
+  // delete event document
+  Future<void> deleteEvent(String documentId) async {
+    try {
+      await databases.deleteDocument(
+        databaseId: 'house-arena-database',
+        collectionId: 'event-details',
+        documentId: documentId,
+      );
+    } catch (e) {
+      print('Error deleting event: $e');
+    }
+  }
+
+  // update event document
+  Future<void> updateEvent(
+      String documentId,
+      String eventName,
+      String? date,
+      int leoPoints,
+      int kongPoints,
+      int phoenixPoints,
+      int tuskerPoints) async {
+    try {
+      await databases.updateDocument(
+        databaseId: 'house-arena-database',
+        collectionId: 'event-details',
+        documentId: documentId,
+        data: {
+          'event_name': eventName,
+          'date': date,
+          'kong_point': kongPoints,
+          'leo_point': leoPoints,
+          'pheonix_point': phoenixPoints,
+          'tusker_point': tuskerPoints,
+        },
+      );
+    } catch (e) {
+      print('Error updating event: $e');
+    }
+  }
 }

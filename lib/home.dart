@@ -1,6 +1,8 @@
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app_house_arena_basic/addEvent_Dialog.dart';
 import 'package:web_app_house_arena_basic/auth.dart';
+import 'package:web_app_house_arena_basic/updateEvent_Dialog.dart';
 import 'dart:ui';
 import 'login_signup.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -511,7 +513,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
                 margin: const EdgeInsets.all(16.0),
                 padding: const EdgeInsets.only(
-                    top: 16.0, left: 30.0, right: 16.0, bottom: 8.0),
+                    top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -543,7 +545,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               ],
                             ),
                             onPressed: () {
-                              // Logic to add new event
+                              showAddEventDialog(context, () {
+                                // Refresh the events list after adding a new event
+                                setState(() {
+                                  eventsSection();
+                                });
+                              });
                             },
                           ),
                       ],
@@ -555,20 +562,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Expanded(
                             flex: 3,
-                            child: Text(
-                              'Event',
-                              style: TextStyle(
-                                fontFamily: GoogleFonts.play().fontFamily,
-                                fontSize: 20,
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 5.0,
-                                    color: Colors.black,
-                                    offset: Offset(2.0, 2.0),
-                                  ),
-                                ],
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Event',
+                                style: TextStyle(
+                                  fontFamily: GoogleFonts.play().fontFamily,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 5.0,
+                                      color: Colors.black,
+                                      offset: Offset(3.0, 3.0),
+                                    ),
+                                  ],
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
                               ),
                             ),
                           ),
@@ -657,6 +666,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: events.map((event) {
+                                final documentId = event.$id ?? 'No Id';
                                 final eventName =
                                     event.data['event_name'] ?? 'No Name';
                                 final dateTime =
@@ -668,8 +678,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     event.data['pheonix_point'] ?? 0;
                                 final tuskerPoints =
                                     event.data['tusker_point'] ?? 0;
-                                return eventRow(eventName, dateTime, kongPoints,
-                                    leoPoints, phoenixPoints, tuskerPoints);
+                                return eventRow(
+                                    documentId,
+                                    eventName,
+                                    dateTime,
+                                    kongPoints,
+                                    leoPoints,
+                                    phoenixPoints,
+                                    tuskerPoints);
                               }).toList(),
                             ),
                           ),
@@ -697,8 +713,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget eventRow(String eventName, String eventDate, int kongPoints,
-      int leoPoints, int phoenixPoints, int tuskerPoints) {
+  Widget eventRow(String documentId, String eventName, String eventDate,
+      int kongPoints, int leoPoints, int phoenixPoints, int tuskerPoints) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -707,24 +723,59 @@ class _MyHomePageState extends State<MyHomePage> {
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    eventName,
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.play().fontFamily,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  if (isLoggedIn)
+                    IconButton(
+                      // onPressed: () async {
+                      //   try {
+                      //     await appwriteService.deleteEvent(documentId);
+                      //     // Optionally, you can refresh the events list here
+                      //     setState(() {
+                      //       // Refresh the events list after deleting an event
+                      //       eventsSection();
+                      //     });
+                      //   } catch (e) {
+                      //     print('Error deleting event: $e');
+                      //   }
+                      // },
+                      onPressed: () => {
+                        showUpdateEventDialog(
+                            context,
+                            documentId,
+                            eventName,
+                            eventDate,
+                            kongPoints,
+                            leoPoints,
+                            phoenixPoints,
+                            tuskerPoints)
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
-                  ),
-                  Text(
-                    eventDate,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color.fromARGB(255, 152, 149, 149),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        eventName,
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.play().fontFamily,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        eventDate,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 152, 149, 149),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

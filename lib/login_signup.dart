@@ -341,7 +341,7 @@ class _LoginSignupPageState extends State<LoginSignupPage>
                 );
               },
               child: const Text(
-                'Don\'t have an account? Sign up',
+                'Logging in for first time? Sign up',
                 style: TextStyle(color: Colors.blue),
               ),
             ),

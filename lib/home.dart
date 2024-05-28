@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:web_app_house_arena_basic/addEvent_Dialog.dart';
 import 'package:web_app_house_arena_basic/auth.dart';
 import 'package:web_app_house_arena_basic/updateEvent_Dialog.dart';
@@ -303,7 +306,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Icon(isLoggedIn
                                 ? Icons.logout_outlined
                                 : Icons.account_circle_sharp),
-                            Text(isLoggedIn ? ' Logout' : 'Admin Login'),
+                            Text(isLoggedIn ? ' Logout' : ' Admin Login'),
                           ],
                         ),
                       ),
@@ -445,9 +448,22 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Container(
-                color: Colors.black.withOpacity(0.2),
+                // width: max(200),
+                // constraints: BoxConstraints(maxWidth: 10),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 135, 135, 135).withOpacity(0.2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.4),
+                      spreadRadius: 5,
+                      blurRadius: 4,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
                 margin: const EdgeInsets.all(16.0),
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    top: 5.0, left: 10.0, right: 10.0, bottom: 8.0),
                 child: IntrinsicHeight(
                   child: SingleChildScrollView(
                     child: Column(
@@ -499,9 +515,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         const SizedBox(height: 16.0),
                         // Leaderboard content
-                        for (var house in sortedHouses)
-                          leaderboardRow(getHouseLogoPath(house.key), house.key,
-                              house.value),
+                        for (var i = 0; i < sortedHouses.length; i++)
+                          leaderboardRow(
+                            getHouseLogoPath(sortedHouses[i].key),
+                            sortedHouses[i].key,
+                            sortedHouses[i].value,
+                            i ==
+                                0, // Pass true if it's the leader house (first row)
+                          ),
                       ],
                     ),
                   ),
@@ -525,11 +546,12 @@ class _MyHomePageState extends State<MyHomePage> {
       case 'House of Leo':
         return 'assets/leo_circle_ai.png';
       default:
-        return 'assets/default.png'; // default logo path
+        return 'assets/default.png';
     }
   }
 
-  Widget leaderboardRow(String logoPath, String houseName, double points) {
+  Widget leaderboardRow(
+      String logoPath, String houseName, double points, bool isLeader) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -548,17 +570,50 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Text(
-            '$points',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
+          Row(
+            children: [
+              if (isLeader)
+                CircleAvatar(
+                  radius: 14,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: AssetImage('assets/tophy.png'),
+                ),
+              Text(
+                '$points',
+                style: TextStyle(
+                  fontSize: 18,
+                  shadows: [
+                    BoxShadow(
+                      color: Colors.black,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                  fontWeight: FontWeight.w600,
+                  color: getcolor(houseName),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
+  }
+
+  Color getcolor(String houseName) {
+    switch (houseName) {
+      case 'House of Phoenix':
+        return Colors.red;
+      case 'House of Tusker':
+        return Colors.green;
+      case 'House of Kong':
+        return Colors.blue;
+      case 'House of Leo':
+        return Colors.yellow;
+      default:
+        return Colors.white;
+    }
   }
 
   Widget eventsSection() {
@@ -577,11 +632,25 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 135, 135, 135).withOpacity(0.2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.4),
+                      spreadRadius: 5,
+                      blurRadius: 4,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
                 height: 600,
-                color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
+                // color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
                 margin: const EdgeInsets.all(16.0),
-                padding: const EdgeInsets.only(
-                    top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
+                padding: isLoggedIn
+                    ? const EdgeInsets.only(
+                        top: 5.0, left: 0.0, right: 10.0, bottom: 8.0)
+                    : const EdgeInsets.only(
+                        top: 5.0, left: 10.0, right: 10.0, bottom: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -825,13 +894,23 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
                           ),
                         ),
-                        Text(
-                          eventDate,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Color.fromARGB(255, 152, 149, 149),
-                          ),
-                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.date_range,
+                              size: 14,
+                              color: Color.fromARGB(255, 204, 204, 204),
+                            ),
+                            SizedBox(),
+                            Text(
+                              eventDate,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(255, 204, 204, 204),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

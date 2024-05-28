@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:web_app_house_arena_basic/appwrite_service.dart';
+import 'package:web_app_house_arena_basic/home.dart';
 
 Future<void> showUpdateEventDialog(
     BuildContext context,
@@ -36,7 +37,32 @@ Future<void> showUpdateEventDialog(
                 onPressed: () async {
                   try {
                     await appwriteService.deleteEvent(documentId);
-                    Navigator.of(context).pop();
+                    //
+                    Navigator.of(context).pushAndRemoveUntil(
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const MyHomePage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeInOut;
+
+                          final tween = Tween(begin: begin, end: end);
+                          final curvedAnimation = CurvedAnimation(
+                            parent: animation,
+                            curve: curve,
+                          );
+
+                          return SlideTransition(
+                            position: tween.animate(curvedAnimation),
+                            child: child,
+                          );
+                        },
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                    //
                   } catch (e) {
                     print('Error deleting event: $e');
                   }
@@ -122,7 +148,30 @@ Future<void> showUpdateEventDialog(
                     updatedLeoPoints,
                     updatedPhoenixPoints,
                     updatedTuskerPoints);
-                Navigator.of(context).pop();
+                Navigator.of(context).pushAndRemoveUntil(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const MyHomePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      final tween = Tween(begin: begin, end: end);
+                      final curvedAnimation = CurvedAnimation(
+                        parent: animation,
+                        curve: curve,
+                      );
+
+                      return SlideTransition(
+                        position: tween.animate(curvedAnimation),
+                        child: child,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) => false,
+                );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(

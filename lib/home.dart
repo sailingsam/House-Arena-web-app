@@ -142,11 +142,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                         backgroundColor: Colors.green,
                                       ),
                                     );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyHomePage()),
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            const MyHomePage(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          const begin = Offset(1.0, 0.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.easeInOut;
+
+                                          final tween =
+                                              Tween(begin: begin, end: end);
+                                          final curvedAnimation =
+                                              CurvedAnimation(
+                                            parent: animation,
+                                            curve: curve,
+                                          );
+
+                                          return SlideTransition(
+                                            position:
+                                                tween.animate(curvedAnimation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                      (Route<dynamic> route) => false,
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -220,11 +242,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                         backgroundColor: Colors.green,
                                       ),
                                     );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyHomePage()),
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            const MyHomePage(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          const begin = Offset(1.0, 0.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.easeInOut;
+
+                                          final tween =
+                                              Tween(begin: begin, end: end);
+                                          final curvedAnimation =
+                                              CurvedAnimation(
+                                            parent: animation,
+                                            curve: curve,
+                                          );
+
+                                          return SlideTransition(
+                                            position:
+                                                tween.animate(curvedAnimation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                      (Route<dynamic> route) => false,
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -306,11 +350,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                         backgroundColor: Colors.green,
                                       ),
                                     );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyHomePage()),
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            const MyHomePage(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          const begin = Offset(1.0, 0.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.easeInOut;
+
+                                          final tween =
+                                              Tween(begin: begin, end: end);
+                                          final curvedAnimation =
+                                              CurvedAnimation(
+                                            parent: animation,
+                                            curve: curve,
+                                          );
+
+                                          return SlideTransition(
+                                            position:
+                                                tween.animate(curvedAnimation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                      (Route<dynamic> route) => false,
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -383,28 +449,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 margin: const EdgeInsets.all(16.0),
                 padding: const EdgeInsets.all(16.0),
                 child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.emoji_events_outlined,
-                            color: Colors.white,
-                            size: 30,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 5.0,
-                                color: Colors.black,
-                                offset: Offset(3.0, 3.0),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            ' Leaderboard ',
-                            style: TextStyle(
-                              fontFamily: GoogleFonts.play().fontFamily,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.emoji_events_outlined,
+                              color: Colors.white,
+                              size: 30,
                               shadows: [
                                 Shadow(
                                   blurRadius: 5.0,
@@ -412,30 +467,43 @@ class _MyHomePageState extends State<MyHomePage> {
                                   offset: Offset(3.0, 3.0),
                                 ),
                               ],
-                              fontSize: 28,
-                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
-                          ),
-                          Icon(
-                            Icons.emoji_events_outlined,
-                            color: Colors.white,
-                            size: 30,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 5.0,
-                                color: Colors.black,
-                                offset: Offset(3.0, 3.0),
+                            Text(
+                              ' Leaderboard ',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.play().fontFamily,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black,
+                                    offset: Offset(3.0, 3.0),
+                                  ),
+                                ],
+                                fontSize: 28,
+                                color: Color.fromARGB(255, 255, 255, 255),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16.0),
-                      // Leaderboard content
-                      for (var house in sortedHouses)
-                        leaderboardRow(getHouseLogoPath(house.key), house.key,
-                            house.value),
-                    ],
+                            ),
+                            Icon(
+                              Icons.emoji_events_outlined,
+                              color: Colors.white,
+                              size: 30,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 5.0,
+                                  color: Colors.black,
+                                  offset: Offset(3.0, 3.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        // Leaderboard content
+                        for (var house in sortedHouses)
+                          leaderboardRow(getHouseLogoPath(house.key), house.key,
+                              house.value),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -727,18 +795,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   if (isLoggedIn)
                     IconButton(
-                      // onPressed: () async {
-                      //   try {
-                      //     await appwriteService.deleteEvent(documentId);
-                      //     // Optionally, you can refresh the events list here
-                      //     setState(() {
-                      //       // Refresh the events list after deleting an event
-                      //       eventsSection();
-                      //     });
-                      //   } catch (e) {
-                      //     print('Error deleting event: $e');
-                      //   }
-                      // },
                       onPressed: () => {
                         showUpdateEventDialog(
                             context,
@@ -756,26 +812,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         size: 20,
                       ),
                     ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        eventName,
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.play().fontFamily,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          eventName,
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.play().fontFamily,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      Text(
-                        eventDate,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color.fromARGB(255, 152, 149, 149),
+                        Text(
+                          eventDate,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 152, 149, 149),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

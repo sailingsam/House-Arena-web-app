@@ -616,232 +616,505 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // Widget eventsSection() {
+  //   return FutureBuilder<List<Document>>(
+  //     future: appwriteService.fetchEvents(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Center(child: LinearProgressIndicator());
+  //       } else if (snapshot.hasError) {
+  //         return Center(child: Text('Error: ${snapshot.error}'));
+  //       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+  //         return Center(child: Text('No events found.'));
+  //       } else {
+  //         final events = snapshot.data!;
+  //         return ClipRect(
+  //           child: BackdropFilter(
+  //             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+  //             child: Container(
+  //               decoration: BoxDecoration(
+  //                 color: Color.fromARGB(255, 135, 135, 135).withOpacity(0.2),
+  //                 boxShadow: [
+  //                   BoxShadow(
+  //                     color: Colors.black.withOpacity(0.4),
+  //                     spreadRadius: 5,
+  //                     blurRadius: 4,
+  //                     offset: const Offset(0, 3),
+  //                   ),
+  //                 ],
+  //               ),
+  //               height: 600,
+  //               // color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
+  //               margin: const EdgeInsets.all(16.0),
+  //               padding: isLoggedIn
+  //                   ? const EdgeInsets.only(
+  //                       top: 5.0, left: 0.0, right: 10.0, bottom: 8.0)
+  //                   : const EdgeInsets.only(
+  //                       top: 5.0, left: 10.0, right: 10.0, bottom: 8.0),
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                     children: [
+  //                       Text(
+  //                         'Past Events',
+  //                         style: TextStyle(
+  //                           fontFamily: GoogleFonts.play().fontFamily,
+  //                           shadows: [
+  //                             Shadow(
+  //                               blurRadius: 5.0,
+  //                               color: Colors.black,
+  //                               offset: Offset(3.0, 3.0),
+  //                             ),
+  //                           ],
+  //                           fontSize: 28,
+  //                           color: Color.fromARGB(255, 255, 255, 255),
+  //                         ),
+  //                       ),
+  //                       if (isLoggedIn)
+  //                         MaterialButton(
+  //                           child: Row(
+  //                             children: [
+  //                               Icon(Icons.add),
+  //                               Text('Add Event',
+  //                                   style: TextStyle(fontSize: 16)),
+  //                             ],
+  //                           ),
+  //                           onPressed: () {
+  //                             showAddEventDialog(context, () {
+  //                               // Refresh the events list after adding a new event
+  //                               setState(() {
+  //                                 eventsSection();
+  //                               });
+  //                             });
+  //                           },
+  //                         ),
+  //                     ],
+  //                   ),
+  //                   const SizedBox(height: 16.0),
+  //                   Padding(
+  //                     padding: const EdgeInsets.only(bottom: 8.0, right: 10.0),
+  //                     child: Row(
+  //                       children: [
+  //                         Expanded(
+  //                           flex: 3,
+  //                           child: Padding(
+  //                             padding: const EdgeInsets.only(left: 10),
+  //                             child: Text(
+  //                               'Event',
+  //                               style: TextStyle(
+  //                                 fontFamily: GoogleFonts.play().fontFamily,
+  //                                 shadows: [
+  //                                   Shadow(
+  //                                     blurRadius: 5.0,
+  //                                     color: Colors.black,
+  //                                     offset: Offset(3.0, 3.0),
+  //                                   ),
+  //                                 ],
+  //                                 fontSize: 25,
+  //                                 color: Color.fromARGB(255, 255, 255, 255),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             height: 40,
+  //                             width: 40,
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.blue,
+  //                               shape: BoxShape.circle,
+  //                             ),
+  //                             child: Center(
+  //                               child: CircleAvatar(
+  //                                 radius: 30,
+  //                                 backgroundImage:
+  //                                     AssetImage('assets/kong_circle_ai.png'),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             height: 40,
+  //                             width: 40,
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.blue,
+  //                               shape: BoxShape.circle,
+  //                             ),
+  //                             child: Center(
+  //                               child: CircleAvatar(
+  //                                 radius: 30,
+  //                                 backgroundImage:
+  //                                     AssetImage('assets/leo_circle_ai.png'),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             height: 40,
+  //                             width: 40,
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.blue,
+  //                               shape: BoxShape.circle,
+  //                             ),
+  //                             child: Center(
+  //                               child: CircleAvatar(
+  //                                 radius: 30,
+  //                                 backgroundImage: AssetImage(
+  //                                     'assets/phoenix_circle_ai.png'),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             height: 40,
+  //                             width: 40,
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.blue,
+  //                               shape: BoxShape.circle,
+  //                             ),
+  //                             child: Center(
+  //                               child: CircleAvatar(
+  //                                 radius: 30,
+  //                                 backgroundImage:
+  //                                     AssetImage('assets/tusker_circle_ai.png'),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Scrollbar(
+  //                       trackVisibility: true,
+  //                       thumbVisibility: true,
+  //                       interactive: true,
+  //                       controller: yourScrollController,
+  //                       child: SingleChildScrollView(
+  //                         controller: yourScrollController,
+  //                         scrollDirection: Axis.vertical,
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(right: 10.0),
+  //                           child: Column(
+  //                             crossAxisAlignment: CrossAxisAlignment.start,
+  //                             children: events.map((event) {
+  //                               final documentId = event.$id ?? 'No Id';
+  //                               final eventName =
+  //                                   event.data['event_name'] ?? 'No Name';
+  //                               final dateTime =
+  //                                   event.data['date'] ?? 'No Data';
+  //                               final kongPoints =
+  //                                   event.data['kong_point'] ?? 0;
+  //                               final leoPoints = event.data['leo_point'] ?? 0;
+  //                               final phoenixPoints =
+  //                                   event.data['pheonix_point'] ?? 0;
+  //                               final tuskerPoints =
+  //                                   event.data['tusker_point'] ?? 0;
+  //                               return eventRow(
+  //                                   documentId,
+  //                                   eventName,
+  //                                   dateTime,
+  //                                   kongPoints,
+  //                                   leoPoints,
+  //                                   phoenixPoints,
+  //                                   tuskerPoints);
+  //                             }).toList(),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Center(
+  //                     child: Row(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: [
+  //                         Text('Scroll for more...',
+  //                             style: TextStyle(color: Colors.white)),
+  //                         Icon(Icons.arrow_downward,
+  //                             color: Colors.white, size: 15),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+
   Widget eventsSection() {
     return FutureBuilder<List<Document>>(
       future: appwriteService.fetchEvents(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: LinearProgressIndicator());
+          return const Center(child: LinearProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No events found.'));
+          return const Center(child: Text('No events found.'));
         } else {
           final events = snapshot.data!;
+          final reversedEvents = events.reversed.toList();
           return ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 135, 135, 135).withOpacity(0.2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.4),
-                      spreadRadius: 5,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                height: 600,
-                // color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-                margin: const EdgeInsets.all(16.0),
-                padding: isLoggedIn
-                    ? const EdgeInsets.only(
-                        top: 5.0, left: 0.0, right: 10.0, bottom: 8.0)
-                    : const EdgeInsets.only(
-                        top: 5.0, left: 10.0, right: 10.0, bottom: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Past Events',
-                          style: TextStyle(
-                            fontFamily: GoogleFonts.play().fontFamily,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 5.0,
-                                color: Colors.black,
-                                offset: Offset(3.0, 3.0),
-                              ),
-                            ],
-                            fontSize: 28,
-                            color: Color.fromARGB(255, 255, 255, 255),
-                          ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 135, 135, 135)
+                          .withOpacity(0.2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.4),
+                          spreadRadius: 5,
+                          blurRadius: 4,
+                          offset: const Offset(0, 3),
                         ),
-                        if (isLoggedIn)
-                          MaterialButton(
-                            child: Row(
-                              children: [
-                                Icon(Icons.add),
-                                Text('Add Event',
-                                    style: TextStyle(fontSize: 16)),
-                              ],
-                            ),
-                            onPressed: () {
-                              showAddEventDialog(context, () {
-                                // Refresh the events list after adding a new event
-                                setState(() {
-                                  eventsSection();
-                                });
-                              });
-                            },
-                          ),
                       ],
                     ),
-                    const SizedBox(height: 16.0),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0, right: 10.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                'Event',
-                                style: TextStyle(
-                                  fontFamily: GoogleFonts.play().fontFamily,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 5.0,
-                                      color: Colors.black,
-                                      offset: Offset(3.0, 3.0),
-                                    ),
+                    height: constraints.maxWidth > 800
+                        ? 600
+                        : reversedEvents.length * 80.0,
+                    margin: const EdgeInsets.all(16.0),
+                    padding: isLoggedIn
+                        ? const EdgeInsets.only(
+                            top: 5.0, left: 0.0, right: 10.0, bottom: 8.0)
+                        : const EdgeInsets.only(
+                            top: 5.0, left: 10.0, right: 10.0, bottom: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Past Events',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.play().fontFamily,
+                                shadows: [
+                                  const Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black,
+                                    offset: Offset(3.0, 3.0),
+                                  ),
+                                ],
+                                fontSize: 28,
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                              ),
+                            ),
+                            if (isLoggedIn)
+                              MaterialButton(
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.add),
+                                    Text('Add Event',
+                                        style: TextStyle(fontSize: 16)),
                                   ],
-                                  fontSize: 25,
-                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                                onPressed: () {
+                                  showAddEventDialog(context, () {
+                                    // Refresh the events list after adding a new event
+                                    setState(() {
+                                      eventsSection();
+                                    });
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 8.0, right: 10.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Event',
+                                    style: TextStyle(
+                                      fontFamily: GoogleFonts.play().fontFamily,
+                                      shadows: const [
+                                        Shadow(
+                                          blurRadius: 5.0,
+                                          color: Colors.black,
+                                          offset: Offset(3.0, 3.0),
+                                        ),
+                                      ],
+                                      fontSize: 25,
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/kong_circle_ai.png'),
+                              Expanded(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                          'assets/kong_circle_ai.png'),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/leo_circle_ai.png'),
+                              Expanded(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                          'assets/leo_circle_ai.png'),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: AssetImage(
-                                      'assets/phoenix_circle_ai.png'),
+                              Expanded(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                          'assets/phoenix_circle_ai.png'),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/tusker_circle_ai.png'),
+                              Expanded(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: AssetImage(
+                                          'assets/tusker_circle_ai.png'),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Scrollbar(
-                        trackVisibility: true,
-                        thumbVisibility: true,
-                        interactive: true,
-                        controller: yourScrollController,
-                        child: SingleChildScrollView(
-                          controller: yourScrollController,
-                          scrollDirection: Axis.vertical,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: events.map((event) {
-                                final documentId = event.$id ?? 'No Id';
-                                final eventName =
-                                    event.data['event_name'] ?? 'No Name';
-                                final dateTime =
-                                    event.data['date'] ?? 'No Data';
-                                final kongPoints =
-                                    event.data['kong_point'] ?? 0;
-                                final leoPoints = event.data['leo_point'] ?? 0;
-                                final phoenixPoints =
-                                    event.data['pheonix_point'] ?? 0;
-                                final tuskerPoints =
-                                    event.data['tusker_point'] ?? 0;
-                                return eventRow(
-                                    documentId,
-                                    eventName,
-                                    dateTime,
-                                    kongPoints,
-                                    leoPoints,
-                                    phoenixPoints,
-                                    tuskerPoints);
-                              }).toList(),
-                            ),
+                            ],
                           ),
                         ),
-                      ),
+                        Expanded(
+                          child: constraints.maxWidth > 800
+                              ? Scrollbar(
+                                  trackVisibility: true,
+                                  thumbVisibility: true,
+                                  interactive: true,
+                                  controller: yourScrollController,
+                                  child: SingleChildScrollView(
+                                    controller: yourScrollController,
+                                    scrollDirection: Axis.vertical,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: reversedEvents.map((event) {
+                                          final documentId =
+                                              event.$id ?? 'No Id';
+                                          final eventName =
+                                              event.data['event_name'] ??
+                                                  'No Name';
+                                          final dateTime =
+                                              event.data['date'] ?? 'No Data';
+                                          final kongPoints =
+                                              event.data['kong_point'] ?? 0;
+                                          final leoPoints =
+                                              event.data['leo_point'] ?? 0;
+                                          final phoenixPoints =
+                                              event.data['pheonix_point'] ?? 0;
+                                          final tuskerPoints =
+                                              event.data['tusker_point'] ?? 0;
+                                          return eventRow(
+                                            documentId,
+                                            eventName,
+                                            dateTime,
+                                            kongPoints,
+                                            leoPoints,
+                                            phoenixPoints,
+                                            tuskerPoints,
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: reversedEvents.map((event) {
+                                        final documentId = event.$id ?? 'No Id';
+                                        final eventName =
+                                            event.data['event_name'] ??
+                                                'No Name';
+                                        final dateTime =
+                                            event.data['date'] ?? 'No Data';
+                                        final kongPoints =
+                                            event.data['kong_point'] ?? 0;
+                                        final leoPoints =
+                                            event.data['leo_point'] ?? 0;
+                                        final phoenixPoints =
+                                            event.data['pheonix_point'] ?? 0;
+                                        final tuskerPoints =
+                                            event.data['tusker_point'] ?? 0;
+                                        return eventRow(
+                                          documentId,
+                                          eventName,
+                                          dateTime,
+                                          kongPoints,
+                                          leoPoints,
+                                          phoenixPoints,
+                                          tuskerPoints,
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ],
                     ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Scroll for more...',
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.arrow_downward,
-                              color: Colors.white, size: 15),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           );

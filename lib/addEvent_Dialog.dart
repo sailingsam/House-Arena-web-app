@@ -53,10 +53,9 @@ void showAddEventDialog(BuildContext context, Function onEventAdded) {
                     }
                   },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a date';
-                    }
-                    if (!RegExp(r'^\d{2}-\d{2}-\d{4}$').hasMatch(value)) {
+                    if (value != null &&
+                        value.isNotEmpty &&
+                        !RegExp(r'^\d{2}-\d{2}-\d{4}$').hasMatch(value)) {
                       return 'Please enter a valid date (DD-MM-YYYY)';
                     }
                     return null;
@@ -134,7 +133,8 @@ void showAddEventDialog(BuildContext context, Function onEventAdded) {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 final eventName = _eventNameController.text;
-                final date = _dateController.text;
+                final date =
+                    _dateController.text.isEmpty ? null : _dateController.text;
                 final kongPoints = int.parse(_kongPointsController.text);
                 final leoPoints = int.parse(_leoPointsController.text);
                 final phoenixPoints = int.parse(_phoenixPointsController.text);

@@ -70,7 +70,7 @@ class AppwriteService {
   }
 
   // create event
-  Future<void> createEvent(String eventName, String date, int leoPoints,
+  Future<void> createEvent(String eventName, String? date, int leoPoints,
       int kongPoints, int phoenixPoints, int tuskerPoints) async {
     try {
       await databases.createDocument(
@@ -109,8 +109,8 @@ class AppwriteService {
       String documentId,
       String eventName,
       String? date,
-      int leoPoints,
       int kongPoints,
+      int leoPoints,
       int phoenixPoints,
       int tuskerPoints) async {
     try {
